@@ -8,7 +8,7 @@ from NoPasswordWindow import NoPasswordWindow
 from ExceptionDialog import ExceptionDialog
 from username import Ui_MainWindow
 
-class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
+class UsernameWindow(QtWidgets.QMainWindow,Ui_MainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
@@ -61,6 +61,6 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    window = MainWindow()
+    window = UsernameWindow()
     window.show()
     sys.exit(app.exec_())
