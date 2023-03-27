@@ -8,3 +8,4 @@ class MetgeWindow(QtWidgets.QMainWindow,Ui_Metge):
         self.setupUi(parent)
         self.db = db
         self.user = user
+        self.txbUser.setText(self.user["login"])

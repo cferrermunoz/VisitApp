@@ -140,5 +140,22 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>btnTancarSessio</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>588</x>
+     <y>24</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>539</x>
+     <y>-8</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

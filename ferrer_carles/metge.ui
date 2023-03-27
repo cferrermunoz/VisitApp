@@ -109,5 +109,22 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>btnTancarSessio</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>659</x>
+     <y>22</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>-15</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

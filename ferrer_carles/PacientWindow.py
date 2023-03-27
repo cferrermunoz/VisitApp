@@ -10,9 +10,11 @@ class PacientWindow(QtWidgets.QMainWindow,Ui_Pacient):
         self.db = db
         self.user = user
         self.btnConfirm.clicked.connect(self.onClickbtnConfirm)
+        self.txbUser.setText(self.user["login"])
 
     def onClickbtnConfirm(self):
-        self.window = QtWidgets.QDialog()
-        self.ui = ConfirmDialog(self.window, self.db, self.user)
-        self.window.show()
-        self.hide()
+        dlg = ConfirmDialog()
+        dlg.setWindowTitle("Confirmar Reserva")
+        # dlg.txbMetge.setText("Metge: " + self.txbMetge.text())
+        # dlg.txbDatetime.setText("Fecha: " + self.txbDatetime.text())
+        dlg.exec()
