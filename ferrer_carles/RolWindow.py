@@ -1,6 +1,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from rol import Ui_MainWindow as Ui_Rol
 from ExceptionDialog import ExceptionDialog
+from PacientWindow import PacientWindow
+from MetgeWindow import MetgeWindow
 
 class RolWindow(QtWidgets.QMainWindow,Ui_Rol):
     def __init__(self, parent, db, user, *args, **kwargs):
@@ -12,7 +14,13 @@ class RolWindow(QtWidgets.QMainWindow,Ui_Rol):
         self.btnMetge.clicked.connect(self.onClickbtnMetge)
 
     def onClickbtnPacient(self):
-        print("Pacient")
+        self.window = QtWidgets.QMainWindow()
+        self.ui = PacientWindow(self.window, self.db, self.user)
+        self.window.show()
+        self.hide()
 
     def onClickbtnMetge(self):
-        print("Metge")
+        self.window = QtWidgets.QMainWindow()
+        self.ui = MetgeWindow(self.window, self.db, self.user)
+        self.window.show()
+        self.hide()
