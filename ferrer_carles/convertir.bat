@@ -4,3 +4,5 @@ pyuic5 -o username.py username.ui
 pyuic5 -o exception.py exception.ui
 pyuic5 -o rol.py rol.ui
 pyuic5 -o pacient.py pacient.ui
+pyuic5 -o metge.py metge.ui
+pyuic5 -o confirm.py confirm.ui
