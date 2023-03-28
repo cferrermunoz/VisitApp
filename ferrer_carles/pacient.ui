@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -46,27 +49,24 @@
         <string>Deamanar hora</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="1" column="3">
-         <widget class="QDateEdit" name="dateEdit"/>
-        </item>
-        <item row="1" column="2">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Data:</string>
+        <item row="2" column="3">
+         <widget class="QDateEdit" name="dateEdit">
+          <property name="enabled">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
-        <item row="1" column="4">
+        <item row="2" column="4">
          <widget class="QLabel" name="label_7">
           <property name="text">
            <string>Hora:</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="6">
-         <widget class="QLabel" name="label_3">
+        <item row="2" column="2">
+         <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Especialitat</string>
+           <string>Data:</string>
           </property>
          </widget>
         </item>
@@ -77,38 +77,48 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0" colspan="11">
+        <item row="2" column="5">
+         <widget class="QComboBox" name="cboHora"/>
+        </item>
+        <item row="3" column="0" colspan="11">
          <widget class="QCalendarWidget" name="calendarWidget"/>
         </item>
-        <item row="1" column="0">
+        <item row="4" column="10">
+         <widget class="QPushButton" name="btnConfirm">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Confirmar Reserva</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
            <string>Metge:</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="2" column="1">
          <widget class="QComboBox" name="cboMetge"/>
         </item>
-        <item row="1" column="10">
+        <item row="2" column="10">
          <widget class="QPushButton" name="btnBuscar">
           <property name="text">
            <string>Buscar</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="10">
-         <widget class="QPushButton" name="btnConfirm">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Confirmar Reserva</string>
+           <string>Especialitat:</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="7">
-         <widget class="QLineEdit" name="txbEspecialitat"/>
-        </item>
-        <item row="1" column="5">
-         <widget class="QComboBox" name="cboHora"/>
+        <item row="1" column="1">
+         <widget class="QComboBox" name="cboEspecialitat"/>
         </item>
        </layout>
       </widget>

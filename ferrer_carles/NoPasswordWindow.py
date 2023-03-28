@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets
 from nopassword import Ui_MainWindow as Ui_NoPassword
 from ExceptionDialog import ExceptionDialog
+from RolWindow import RolWindow
 
 class NoPasswordWindow(QtWidgets.QMainWindow,Ui_NoPassword):
     def __init__(self, parent, db, user, *args, **kwargs):
@@ -18,11 +19,15 @@ class NoPasswordWindow(QtWidgets.QMainWindow,Ui_NoPassword):
         if (pass2 != pass1):
             dlg = ExceptionDialog()
             dlg.setWindowTitle("Error")
-            dlg.txbExcept.setText("Las contraseñas no coinciden")
+            dlg.txbExcept.setText("Les contrasenyes no coincideixen")
             dlg.exec()
         else:
-            print("Contraseña cambiada")
-            print(pass1)
-            print(pass2)
-            self.db.Usuaris.update_one({"login": self.login}, {"$set": {"password": pass1}})
-            print(1)
+            dlg = ExceptionDialog()
+            dlg.setWindowTitle("Ok!")
+            dlg.txbExcept.setText("Contrasenya creada")
+            dlg.exec()
+            # self.db.Usuaris.update_one({"login": self.login}, {"$set": {"password": pass1}})
+            self.window = QtWidgets.QMainWindow()
+            self.ui = RolWindow(self.window, self.db, self.user)
+            self.window.show()
+            self.hide()
