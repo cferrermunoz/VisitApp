@@ -27,7 +27,7 @@ class PacientWindow(QtWidgets.QMainWindow,Ui_Pacient):
     def onClickbtnConfirm(self):
         dlg = ConfirmDialog()
         dlg.setWindowTitle("Confirmar Reserva")
-        # dlg.txbMetge.setText("Metge: " + self.txbMetge.text())
+        dlg.txbMetge.setText("Metge: " + self.cboMetge.currentText())
         # dlg.txbDatetime.setText("Fecha: " + self.txbDatetime.text())
         dlg.exec()
 

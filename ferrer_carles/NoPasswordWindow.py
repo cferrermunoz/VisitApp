@@ -3,6 +3,8 @@ from nopassword import Ui_MainWindow as Ui_NoPassword
 from ExceptionDialog import ExceptionDialog
 from RolWindow import RolWindow
 import hashlib
+from MetgeWindow import MetgeWindow
+from PacientWindow import PacientWindow
 
 class NoPasswordWindow(QtWidgets.QMainWindow,Ui_NoPassword):
     def __init__(self, parent, db, user, *args, **kwargs):
@@ -17,7 +19,6 @@ class NoPasswordWindow(QtWidgets.QMainWindow,Ui_NoPassword):
     def btnChangePass(self):
         pass1 = self.txbPass1.text()
         pass2 = self.txbPass2.text()
-        print(pass1)
         if (pass2 != pass1):
             dlg = ExceptionDialog()
             dlg.setWindowTitle("Error")
@@ -28,13 +29,24 @@ class NoPasswordWindow(QtWidgets.QMainWindow,Ui_NoPassword):
             dlg.setWindowTitle("Ok!")
             dlg.txbExcept.setText("Contrasenya creada")
             dlg.exec()
-            print(self.user)
             pass1 = hashlib.sha1(pass1.encode('utf-8')).hexdigest()
             filtre = {"login": self.user["login"]}
             camp = {"$set": {"password": pass1}}
             self.USUARIS.update_one(filtre, camp)
-            print(pass1)
-            self.window = QtWidgets.QMainWindow()
-            self.ui = RolWindow(self.window, self.db, self.user)
-            self.window.show()
-            self.hide()
+            metge = self.db.METGES.find_one({'_id': self.user["_id"]})
+            pacient = self.db.PACIENTS.find_one({'_id': self.user["_id"]})
+            if (metge != None and pacient != None):
+                self.window = QtWidgets.QMainWindow()
+                self.ui = RolWindow(self.window, self.db, self.user)
+                self.window.show()
+                self.hide()
+            elif (metge != None):
+                self.window = QtWidgets.QMainWindow()
+                self.ui = MetgeWindow(self.window, self.db, self.user)
+                self.window.show()
+                self.hide()
+            else:
+                self.window = QtWidgets.QMainWindow()
+                self.ui = PacientWindow(self.window, self.db, self.user)
+                self.window.show()
+                self.hide()

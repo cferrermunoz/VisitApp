@@ -32,9 +32,9 @@ class Ui_MainWindow(object):
         self.txbUsername = QtWidgets.QLineEdit(self.widget)
         self.txbUsername.setObjectName("txbUsername")
         self.gridLayout.addWidget(self.txbUsername, 1, 1, 1, 1)
-        self.pushButton_4 = QtWidgets.QPushButton(self.widget)
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.gridLayout.addWidget(self.pushButton_4, 2, 1, 1, 1)
+        self.btnCancel = QtWidgets.QPushButton(self.widget)
+        self.btnCancel.setObjectName("btnCancel")
+        self.gridLayout.addWidget(self.btnCancel, 2, 1, 1, 1)
         self.btnLogin = QtWidgets.QPushButton(self.widget)
         self.btnLogin.setObjectName("btnLogin")
         self.gridLayout.addWidget(self.btnLogin, 2, 0, 1, 1)
@@ -44,7 +44,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.pushButton_4.clicked.connect(MainWindow.close) # type: ignore
+        self.btnCancel.clicked.connect(MainWindow.close) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -52,5 +52,5 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_2.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">Login</span></p></body></html>"))
         self.label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600;\">Username:</span></p></body></html>"))
-        self.pushButton_4.setText(_translate("MainWindow", "Cancel"))
+        self.btnCancel.setText(_translate("MainWindow", "Cancel"))
         self.btnLogin.setText(_translate("MainWindow", "Login"))

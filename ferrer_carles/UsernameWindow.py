@@ -14,6 +14,7 @@ class UsernameWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.setupUi(self)
         self.btnLogin.clicked.connect(self.onClickBtnLogin)
         self.txbUsername.returnPressed.connect(self.onClickBtnLogin)
+        self.btnCancel.clicked.connect(self.onClickBtnCancel)
         try:
             load_dotenv()
             mongodb = os.getenv("mongodb")
@@ -37,7 +38,6 @@ class UsernameWindow(QtWidgets.QMainWindow,Ui_MainWindow):
     def onClickBtnLogin (self):
         self.login = self.txbUsername.text()
         self.user = self.db.USUARIS.find_one({"login": self.login}, { 'login': 1, 'password': 1})
-        print(self.user)
         if(self.user == None):
             dlg = ExceptionDialog()
             dlg.setWindowTitle("Error")
@@ -46,6 +46,7 @@ class UsernameWindow(QtWidgets.QMainWindow,Ui_MainWindow):
             return
         if(self.user["password"] == ""):
             # paldana
+            self.hide()
             self.window = QtWidgets.QMainWindow()
             self.ui = NoPasswordWindow(self.window, self.db, self.user)
             self.ui.txbUser.setText(self.login)
@@ -53,11 +54,15 @@ class UsernameWindow(QtWidgets.QMainWindow,Ui_MainWindow):
             self.hide()
         else:
             # xagueda
+            self.hide()
             self.window = QtWidgets.QMainWindow()
             self.ui = PasswordWindow(self.window, self.db, self.user)
             self.ui.txbUser.setText(self.login)
             self.window.show()
             self.hide()
+
+    def onClickBtnCancel (self):
+        self.close()
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

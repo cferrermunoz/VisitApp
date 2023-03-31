@@ -42,7 +42,7 @@
       <widget class="QLineEdit" name="txbUsername"/>
      </item>
      <item row="2" column="1">
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="btnCancel">
        <property name="text">
         <string>Cancel</string>
        </property>
@@ -63,7 +63,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton_4</sender>
+   <sender>btnCancel</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
    <slot>close()</slot>
