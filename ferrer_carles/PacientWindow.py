@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets
 from pacient import Ui_MainWindow as Ui_Pacient
 from ConfirmDialog import ConfirmDialog
+from datetime import datetime
 
 
 class PacientWindow(QtWidgets.QMainWindow,Ui_Pacient):
@@ -10,6 +11,8 @@ class PacientWindow(QtWidgets.QMainWindow,Ui_Pacient):
         self.parent = parent
         self.db = db
         self.user = user
+        self.calendarWidget.setSelectedDate(datetime.today())
+        self.dateEdit.setDate(datetime.today())
         # self.btnTancarSessio.clicked.connect(self.onClickbtnTancarSessio)
         self.btnConfirm.clicked.connect(self.onClickbtnConfirm)
         self.txbUser.setText(self.user["login"])
