@@ -11,6 +11,18 @@ class PacientWindow(QtWidgets.QMainWindow,Ui_Pacient):
         self.user = user
         self.btnConfirm.clicked.connect(self.onClickbtnConfirm)
         self.txbUser.setText(self.user["login"])
+        self.calendarWidget.clicked.connect(self.onClickCalendar)
+        llistaEsp = []
+        for x in self.db.METGES.find():
+            if x['especialitat'] not in llistaEsp:
+                llistaEsp.append(x['especialitat'])
+        llistaEsp.append("Totes")
+        for x in llistaEsp:
+            self.cboEspecialitat.addItem(x)
+        self.cboEspecialitat.setCurrentIndex(len(llistaEsp)-1)
+        for x in self.db.METGES.find():
+            y = self.db.USUARIS.find_one({'_id': x["_id"]}, {'login': 1, 'nom': 1, 'cognom1': 1, 'cognom2': 1})
+            self.cboMetge.addItem(y["nom"] + " " + y["cognom1"] + " " + y["cognom2"])
 
     def onClickbtnConfirm(self):
         dlg = ConfirmDialog()
@@ -18,3 +30,7 @@ class PacientWindow(QtWidgets.QMainWindow,Ui_Pacient):
         # dlg.txbMetge.setText("Metge: " + self.txbMetge.text())
         # dlg.txbDatetime.setText("Fecha: " + self.txbDatetime.text())
         dlg.exec()
+
+    def onClickCalendar(self):
+        print(self.calendarWidget.selectedDate().toString("dd/MM/yyyy"))
+        self.dateEdit.setDate(self.calendarWidget.selectedDate())

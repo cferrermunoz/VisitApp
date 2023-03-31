@@ -2,6 +2,7 @@ from PyQt5 import QtWidgets
 from nopassword import Ui_MainWindow as Ui_NoPassword
 from ExceptionDialog import ExceptionDialog
 from RolWindow import RolWindow
+import hashlib
 
 class NoPasswordWindow(QtWidgets.QMainWindow,Ui_NoPassword):
     def __init__(self, parent, db, user, *args, **kwargs):
@@ -11,6 +12,7 @@ class NoPasswordWindow(QtWidgets.QMainWindow,Ui_NoPassword):
         self.user = user
         self.btnLoginNP.clicked.connect(self.btnChangePass)
         self.txbPass2.returnPressed.connect(self.btnChangePass)
+        self.USUARIS = self.db["USUARIS"]
 
     def btnChangePass(self):
         pass1 = self.txbPass1.text()
@@ -26,7 +28,12 @@ class NoPasswordWindow(QtWidgets.QMainWindow,Ui_NoPassword):
             dlg.setWindowTitle("Ok!")
             dlg.txbExcept.setText("Contrasenya creada")
             dlg.exec()
-            # self.db.Usuaris.update_one({"login": self.login}, {"$set": {"password": pass1}})
+            print(self.user)
+            pass1 = hashlib.sha1(pass1.encode('utf-8')).hexdigest()
+            filtre = {"login": self.user["login"]}
+            camp = {"$set": {"password": pass1}}
+            self.USUARIS.update_one(filtre, camp)
+            print(pass1)
             self.window = QtWidgets.QMainWindow()
             self.ui = RolWindow(self.window, self.db, self.user)
             self.window.show()
