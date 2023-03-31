@@ -42,7 +42,7 @@
     <item row="1" column="0" colspan="3">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_1">
        <attribute name="title">
@@ -188,22 +188,5 @@
   </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>btnTancarSessio</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>588</x>
-     <y>24</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>539</x>
-     <y>-8</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
