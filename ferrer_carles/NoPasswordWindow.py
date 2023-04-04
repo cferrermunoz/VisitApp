@@ -31,21 +31,26 @@ class NoPasswordWindow(QtWidgets.QMainWindow,Ui_NoPassword):
             dlg.exec()
             pass1 = hashlib.sha1(pass1.encode('utf-8')).hexdigest()
             filtre = {"login": self.user["login"]}
-            camp = {"$set": {"password": pass1}}
+            camp = {"$set": {"Password": pass1}}
             self.USUARIS.update_one(filtre, camp)
             metge = self.db.METGES.find_one({'_id': self.user["_id"]})
             pacient = self.db.PACIENTS.find_one({'_id': self.user["_id"]})
             if (metge != None and pacient != None):
+                self.close()
+                self.parent.close()
                 self.window = QtWidgets.QMainWindow()
                 self.ui = RolWindow(self.window, self.db, self.user)
                 self.window.show()
                 self.hide()
             elif (metge != None):
+                self.close()
+                self.parent.close()
                 self.window = QtWidgets.QMainWindow()
                 self.ui = MetgeWindow(self.window, self.db, self.user)
                 self.window.show()
                 self.hide()
             else:
+                self.close()
                 self.window = QtWidgets.QMainWindow()
                 self.ui = PacientWindow(self.window, self.db, self.user)
                 self.window.show()

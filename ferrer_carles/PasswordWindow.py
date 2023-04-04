@@ -25,7 +25,7 @@ class PasswordWindow(QtWidgets.QMainWindow,Ui_Password):
     def onClickbtnLogin(self):
         password = self.txbPass.text()
         password = hashlib.sha1(password.encode('utf-8')).hexdigest()
-        if (password != self.user["password"]):
+        if (password != self.user["Password"]):
             dlg = ExceptionDialog()
             dlg.setWindowTitle("Error")
             dlg.txbExcept.setText("Contraseña incorrecta")

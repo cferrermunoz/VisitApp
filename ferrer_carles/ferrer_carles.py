@@ -29,6 +29,9 @@ usuaris = db[os.getenv("USUARIS")]
 pacients = db[os.getenv("PACIENTS")]
 metges = db[os.getenv("METGES")]
 
+usuaris.drop()
+pacients.drop()
+metges.drop()
 
 # Creem els diccionaris per guardar els objectes de cada usuari
 dict_pacients = {}
@@ -37,11 +40,15 @@ dict_metges = {}
 # Insert de usuaris
 for row in users_list:
     zero = '0'
+    if row['Sexe']==0:
+        S = 'M'
+    else:
+        S = 'F'
     user = usuaris.insert_one({
         'id_temporal': row['id_temporal'],
         'DNI': row['DNI'] if type(row['DNI']) != float else None,
         'login': row['login'],
-        'Sexe': row['Sexe'],
+        'Sexe': S,
         'Cognoms_i_Nom': row['Cognoms_i_Nom'],
         'Data_Naixement': datetime.strptime(row['Data_Naixement'], '%Y-%m-%dT%H:%M:%S.%fZ') if type(
             row['Data_Naixement']) != float else None,
@@ -50,6 +57,7 @@ for row in users_list:
         'CP': str(zero) + str(row['CP']) if type(row['CP']) != float else None,
         'Província': row['Província'] if type(row['Província']) != float else None,
         'País': row['País'] if type(row['País']) != float else None,
+        'Password': ""
     })
 
     print("Usari inserit: " + row['Cognoms_i_Nom'] + "")
@@ -210,15 +218,6 @@ metges.update_one(
 )
 print("Metge: ", metge["_id"], " Agenda ordenada")
 
-# Borrar camps nulls
-for user in usuaris.find():
-    for key in user:
-        if user[key] is None:
-            usuaris.update_one(
-                {'_id': user["_id"]},
-                {'$unset': {key: ''}}
-            )
-            print("Usuari: ", user["_id"], " Camp: ", key, " Eliminat")
 
 # Borrar tots els id_temporal de la col·lecció usuaris
 usuaris.update_many({}, {'$unset': {'id_temporal': ''}})

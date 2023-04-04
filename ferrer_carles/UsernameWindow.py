@@ -37,14 +37,14 @@ class UsernameWindow(QtWidgets.QMainWindow,Ui_MainWindow):
 
     def onClickBtnLogin (self):
         self.login = self.txbUsername.text()
-        self.user = self.db.USUARIS.find_one({"login": self.login}, { 'login': 1, 'password': 1})
+        self.user = self.db.USUARIS.find_one({"login": self.login}, { 'login': 1, 'Password': 1})
         if(self.user == None):
             dlg = ExceptionDialog()
             dlg.setWindowTitle("Error")
             dlg.txbExcept.setText("Usuario no encontrado")
             dlg.exec()
             return
-        if(self.user["password"] == ""):
+        if(self.user["Password"] == ""):
             # paldana
             self.hide()
             self.window = QtWidgets.QMainWindow()
@@ -63,9 +63,3 @@ class UsernameWindow(QtWidgets.QMainWindow,Ui_MainWindow):
 
     def onClickBtnCancel (self):
         self.close()
-
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    window = UsernameWindow()
-    window.show()
-    sys.exit(app.exec_())
