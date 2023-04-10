@@ -10,6 +10,6 @@ client = MongoClient("mongodb+srv://" + user + ":" + password + mongodb)
 db = client.cferrer1
 agenda = db.METGES.find_one({},{'agenda': 1})
 for x in agenda['agenda']:
-    if x['moment_visita'].strftime('%Y-%m-%d') == "2023-03-28":
-        print(x['moment_visita'].strftime('%H:%MN'))
+    if x['moment_visita'].strftime('%Y-%m-%d') == "2023-04-13" and x['id_pacient'] == 0:
+        print(x)
 
