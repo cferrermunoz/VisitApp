@@ -8,13 +8,13 @@ from PacientWindow import PacientWindow
 
 class NoPasswordWindow(QtWidgets.QMainWindow,Ui_NoPassword):
     def __init__(self, parent, db, user, *args, **kwargs):
-        super(NoPasswordWindow, self).__init__(*args, **kwargs)
+        super().__init__(parent)
         self.setupUi(parent)
+        self.parent = parent
         self.db = db
         self.user = user
         self.btnLoginNP.clicked.connect(self.btnChangePass)
         self.txbPass2.returnPressed.connect(self.btnChangePass)
-        self.USUARIS = self.db["USUARIS"]
 
     def btnChangePass(self):
         pass1 = self.txbPass1.text()
@@ -32,7 +32,7 @@ class NoPasswordWindow(QtWidgets.QMainWindow,Ui_NoPassword):
             pass1 = hashlib.sha1(pass1.encode('utf-8')).hexdigest()
             filtre = {"login": self.user["login"]}
             camp = {"$set": {"Password": pass1}}
-            self.USUARIS.update_one(filtre, camp)
+            self.db.USUARIS.update_one(filtre, camp)
             metge = self.db.METGES.find_one({'_id': self.user["_id"]})
             pacient = self.db.PACIENTS.find_one({'_id': self.user["_id"]})
             if (metge != None and pacient != None):
@@ -51,6 +51,7 @@ class NoPasswordWindow(QtWidgets.QMainWindow,Ui_NoPassword):
                 self.hide()
             else:
                 self.close()
+                self.parent.close()
                 self.window = QtWidgets.QMainWindow()
                 self.ui = PacientWindow(self.window, self.db, self.user)
                 self.window.show()

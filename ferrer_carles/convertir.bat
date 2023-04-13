@@ -6,3 +6,4 @@ pyuic5 -o rol.py rol.ui
 pyuic5 -o pacient.py pacient.ui
 pyuic5 -o metge.py metge.ui
 pyuic5 -o confirm.py confirm.ui
+pyuic5 -o puspose.py puspose.ui

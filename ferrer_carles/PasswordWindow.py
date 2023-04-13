@@ -10,10 +10,7 @@ import hashlib
 class PasswordWindow(QtWidgets.QMainWindow,Ui_Password):
     def __init__(self, parent, db, user, *args, **kwargs):
         super().__init__(parent)
-
-
         self.setupUi(parent)
-        self.parent = parent
         self.db = db
         self.user = user
         self.btnLoginP.clicked.connect(self.onClickbtnLogin)
@@ -34,23 +31,18 @@ class PasswordWindow(QtWidgets.QMainWindow,Ui_Password):
             metge = self.db.METGES.find_one({'_id': self.user["_id"]})
             pacient = self.db.PACIENTS.find_one({'_id': self.user["_id"]})
             if (metge != None and pacient != None):
-                self.close()
-                self.parent.close()
+                self.hide()
                 self.window = QtWidgets.QMainWindow()
                 self.ui = RolWindow(self.window, self.db, self.user)
                 self.window.show()
-                self.hide()
             elif (metge != None):
-                self.close()
-                self.parent.close()
+                self.hide()
                 self.window = QtWidgets.QMainWindow()
                 self.ui = MetgeWindow(self.window, self.db, self.user)
                 self.window.show()
-                self.hide()
+
             else:
-                self.close()
-                self.parent.close()
+                self.hide()
                 self.window = QtWidgets.QMainWindow()
                 self.ui = PacientWindow(self.window, self.db, self.user)
                 self.window.show()
-                self.hide()

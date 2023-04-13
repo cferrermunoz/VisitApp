@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore, QtGui
 from pacient import Ui_MainWindow as Ui_Pacient
 from ConfirmDialog import ConfirmDialog
 from ExceptionDialog import ExceptionDialog
@@ -12,6 +12,9 @@ class PacientWindow(QtWidgets.QMainWindow,Ui_Pacient):
         self.parent = parent
         self.db = db
         self.user = user
+        self.filtre = {'agenda.id_pacient': self.user['_id']}
+        self.llista_visita = self.db.METGES.find(self.filtre)
+        self.avui = datetime.today()
         #inicio de la ventana
         self.calendarWidget.setSelectedDate(datetime.today())
         self.dateEdit.setDate(datetime.today())
@@ -46,6 +49,86 @@ class PacientWindow(QtWidgets.QMainWindow,Ui_Pacient):
         self.cboHora.currentIndexChanged.connect(self.onClickCboHora)
         self.cboMetge.currentIndexChanged.connect(self.onClickCboMetge)
         self.cboEspecialitat.currentIndexChanged.connect(self.onClickCboEspecialitat)
+        self.twVPass.cellClicked.connect(self.onClickTwVPass)
+        self.twVProg.cellClicked.connect(self.onClickTwVProg)
+        self.btnPuspose.clicked.connect(self.onClickbtnPuspose)
+        self.btnCancelVisita.clicked.connect(self.onClickbtnCancelVisita)
+        self.twVProg.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.twVPass.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        # QTableWidget
+        self.init_twVPass()
+        self.init_twVProg()
+
+    def onClickbtnCancelVisita(self):
+        if self.twVProg.currentRow() != -1:
+            data = self.twVProg.item(self.twVProg.currentRow(), 1).text()
+            data = datetime.strptime(data, '%d/%m/%Y %H:%M')
+            filtre = {'agenda.id_pacient': self.user['_id'], 'agenda.moment_visita': data}
+            self.db.METGES.update_one(filtre, {'$pull': {'agenda': {'id_pacient': self.user['_id']}}})
+            self.twVProg.removeRow(self.twVProg.currentRow())
+            self.twVProg.clearSelection()
+
+    def onClickbtnPuspose(self):
+        if self.twVProg.currentRow() != -1:
+            self.twVProg.removeRow(self.twVProg.currentRow())
+            self.btnPuspose.setEnabled(False)
+            self.btnCancelVisita.setEnabled(False)
+    def onClickTwVPass(self):
+        llista_visita = self.db.METGES.find(self.filtre)
+        if self.twVPass.currentRow() != -1:
+            for x in llista_visita:
+                for y in x['agenda']:
+                    if y['id_pacient'] == self.user['_id']:
+                        if y['moment_visita'].strftime('%d/%m/%Y %H:%M') == self.twVPass.item(self.twVPass.currentRow(), 1).text():
+                            if not isinstance(y['informe'], float):
+                                self.teVPass.setText(y['informe'])
+                            else:
+                                self.teVPass.setText("No hi ha informe")
+                            break
+
+
+
+    def onClickTwVProg(self):
+        self.btnPuspose.setEnabled(False)
+        self.btnCancelVisita.setEnabled(False)
+        llista_visita = self.db.METGES.find(self.filtre)
+        if self.twVProg.currentRow() != -1:
+            self.btnPuspose.setEnabled(True)
+            self.btnCancelVisita.setEnabled(True)
+            for x in llista_visita:
+                for y in x['agenda']:
+                    if y['id_pacient'] == self.user['_id']:
+                        if y['moment_visita'].strftime('%d/%m/%Y %H:%M') == self.twVProg.item(self.twVProg.currentRow(), 1).text():
+                            if not isinstance(y['informe'], float):
+                                self.teVProg.setText(y['informe'])
+                            else:
+                                self.teVProg.setText("No hi ha informe")
+                            break
+    def init_twVProg(self):
+        for x in self.llista_visita:
+            for y in x['agenda']:
+                if y['moment_visita'] > self.avui:
+                    if y['id_pacient'] == self.user['_id']:
+                        self.twVProg.insertRow(self.twVProg.rowCount())
+                        for z in self.llistaMetges:
+                            if z['_id'] == x['_id']:
+                                self.twVProg.setItem(self.twVProg.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(z['Cognoms_i_Nom']))
+                                self.twVProg.setItem(self.twVProg.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(y['moment_visita'].strftime('%d/%m/%Y %H:%M')))
+
+    def init_twVPass(self):
+        llista_visita = self.db.METGES.find(self.filtre)
+        for x in llista_visita:
+            for y in x['agenda']:
+                if y['moment_visita'] < self.avui:
+                    if y['id_pacient'] == self.user['_id']:
+                        self.twVPass.insertRow(self.twVPass.rowCount())
+                        for z in self.llistaMetges:
+                            if z['_id'] == x['_id']:
+                                self.twVPass.setItem(self.twVPass.rowCount()-1, 0, QtWidgets.QTableWidgetItem(z['Cognoms_i_Nom']))
+                                self.twVPass.setItem(self.twVPass.rowCount()-1, 1, QtWidgets.QTableWidgetItem(y['moment_visita'].strftime('%d/%m/%Y %H:%M')))
+                                self.twVPass.setItem(self.twVPass.rowCount()-1, 2, QtWidgets.QTableWidgetItem(y['realitzada']))
+
+
 
     def onClickCboEspecialitat(self):
         self.dateEdit.setEnabled(False)
@@ -95,8 +178,10 @@ class PacientWindow(QtWidgets.QMainWindow,Ui_Pacient):
         self.dateEdit.setDate(datetime.today())
         if (self.cboMetge.currentIndex() != 0):
             self.dateEdit.setEnabled(True)
+            self.calendarWidget.setEnabled(True)
         else:
             self.dateEdit.setEnabled(False)
+            self.calendarWidget.setEnabled(False)
     def onClickbtnAvui(self):
         self.calendarWidget.setSelectedDate(datetime.today())
         self.dateEdit.setDate(datetime.today())
@@ -128,8 +213,10 @@ class PacientWindow(QtWidgets.QMainWindow,Ui_Pacient):
                     id_metge = x["_id"]
                     break
             filtre = {'_id': id_metge, "agenda.moment_visita": datetime.combine(data, datetime.strptime(self.cboHora.currentText(), '%H:%M').time())}
-            camp = {"$set": {"id_pacient": id_pacient, 'informe': text}}
+            camp = {"$set": {"agenda.$.id_pacient": id_pacient, 'agenda.$.informe': text}}
             self.db.METGES.update_one(filtre,camp)
+            self.cboMetge.setCurrentIndex(0)
+            self.btnAvui.click()
         else:
             dlg = ExceptionDialog()
             dlg.setWindowTitle("Cancel·lat")
